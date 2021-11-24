@@ -1,2 +1,3 @@
-# DemoGit
-demo
+<?php
+echo "Hello";
+?>
