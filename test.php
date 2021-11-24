@@ -12,6 +12,9 @@
             class PhpOOP {
                 public $name;
                 public $age;
+                function __construct($name, $age) {
+                    $this->name = $name;
+                    $this->age = $color;
 
                 function set_name($name) {
                     $this -> name = $name;
@@ -25,6 +28,10 @@
                 }
                 function get_age() {
                     $this -> age;
+                }
+                function PrintAge (): int{
+                    $age = $this.$age;
+                    return $age;
                 }
             }
         ?>
