@@ -14,7 +14,8 @@
                 public $age;
                 function __construct($name, $age) {
                     $this->name = $name;
-                    $this->age = $color;
+                    $this->age = $age;
+                }
 
                 function set_name($name) {
                     $this -> name = $name;
@@ -29,7 +30,7 @@
                 function get_age() {
                     $this -> age;
                 }
-                function PrintAge (): int{
+                function PrintAge (int $age): int{
                     $age = $this.$age;
                     return $age;
                 }
