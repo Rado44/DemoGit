@@ -16,5 +16,10 @@
             echo 'Connected successfully';
             return $this->conn;
         }
+        public function Select($table, $condition = "", $sort = "", $order = " ASC ", $clause = " AND ") 
+        {
+            $db = $this->db_connect();
+            $db->query = "SELECT * FROM ".$table."";
+        }
     }
 ?>
