@@ -13,7 +13,7 @@
             if (!$this->conn) {
                 die("Connection failed: " . mysqli_connect_error());
             }
-            echo 'Connected successfully';
+            //echo 'Connected successfully';
             return $this->conn;
         }
         public function Select($table, $condition = "", $sort = "", $order = " ASC ", $clause = " AND ") 
