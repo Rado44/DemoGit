@@ -1,5 +1,5 @@
 <?php
-require_once 'DBConnection.php';
+/*require_once 'DBConnection.php';
 
 $database;
 $connection = new DBConnection();
@@ -11,37 +11,60 @@ $type = 'dasdad';
 //$database->query("INSERT INTO services (descrip, sender, receiver, quantity, m_unit, unit_price, total_price, val_price, vat, note) VALUES ('MATBGROTX8100', 'Bg', 'Ro', 45.00, 'Pc.', 45.00 ,45.00 ,45.00 ,45.00 , 'gygyugyu')");
 //var_dump($database);
 
-//$database->query("SELECT * FROM clients_providers");
-//echo "Affected rows: " . $database -> affected_rows;
-//$sql = "SELECT ID, name, iban FROM banks_info WHERE ID = 2" ;
-//$result = $database->query($sql);
+//$database->query("INSERT INTO banks_info (name, bic, iban) VALUES ('RaiffeisenBank', '87537537', 'bg658374347287463742')");
+$database->query("INSERT INTO clients_providers (name, address, country, city, number, vat_number, acc_person, type, bank_ID) VALUES ('Rado EOOD', 'Ivan Vazov 75', 'Bulgaria', 'Plovdiv', '46640013552', 'BG449579467775', 'Kiril', 1, 7)");
+
+$sql = "SELECT ID, bank_name, iban FROM banks_info";
+$result = $database->query($sql);
 
 /*if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
-    echo "id: " . $row["ID"]. " - Name: " . $row["name"]. " " . $row["iban"]. "<br>";
+    echo "id: " . $row["ID"]. " - Name: " . $row["bank_name"]. " -IBAN:" . $row["iban"]. "<br>";
   }
 } else {
   echo "0 results";
-}*/
+}
 
-//$sql1 = "SELECT ID, name, address, country, city, number,vat_number,acc_person,type, bank_ID FROM clients_providers";
-//$result = $database->query($sql1);
+$sql = "SELECT ID, name, address, country, city, vat_number FROM clients_providers";
+$result = $database->query($sql);
 
-/*if ($result->num_rows > 0) 
+if ($result->num_rows > 0) 
 {
-    
+    echo "<table><tr><th>ID</th><th>Name</th><th>Adress</th><th>Vat Number</th></tr>";
     while($row = $result->fetch_assoc()) 
     {
-        if ($row["type"] == 0){$type = "client";}
-        else {$type = "provider";}
-      echo "id: " . $row["ID"]. " - Name: " . $row["name"]. " - Country:" . $row["country"]." - City: " . $row["city"]." - Number:" . $row["number"]." - Vat:" . $row["vat_number"]." - Accountable person: " . $row["acc_person"]. " - Type:" . $type." - BankID" . $row["bank_ID"]."<br>";
+      echo "<tr><td>".$row["ID"]."</td><td>".$row["name"]."</td><td>".$row["address"]." ".$row["country"]." ".$row["city"]."</td><td>".$row["vat_number"]."</td></tr>";
     }
+    echo "</table>";
 } 
 else 
 {
     echo "0 results";
-}*/
-$database->close();
+}
+
+$sql = "SELECT cp.ID, cp.name, cp.address, cp.country, cp.city, cp.vat_number,
+               b.bank_name, b.bic, b.iban    
+        FROM clients_providers cp
+        INNER JOIN banks_info b
+        ON cp.bank_ID = b.ID";
+$result = $database->query($sql);
+
+if ($result->num_rows > 0) 
+{
+    echo "<table><tr><th>ID</th><th>Name</th><th>Adress</th><th>Vat Number</th><th>Bank</th><th>BIC</th><th>IBAN</th></tr>";
+    while($row = $result->fetch_assoc()) 
+    {
+      echo "<tr><td>".$row["ID"]."</td><td>".$row["name"]."</td><td>".$row["address"]." ".$row["country"]." ".$row["city"]."</td><td>".$row["vat_number"].
+      "</td><td>".$row["bank_name"]."</td><td>".$row["bic"]."</td><td>".$row["iban"]."</td></tr>";
+    }
+    echo "</table>";
+} 
+else 
+{
+    echo "0 results";
+}
+
+$database->close();*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,9 +103,11 @@ $database->close();
   				font-size: 18px;
 			}
 			p {
-  				font-size: 14px;
+  				font-size: 13px;
   				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
   				text-align: center;
+				height: 13px;
+				padding: 1px;
 			}
 			p:nth-child() {
 				font-size: 14px;
@@ -152,6 +177,7 @@ $database->close();
 				background: #eee;
 				border-bottom: 5px solid #ddd;
 				font-weight: bold;
+				padding-top: px;
 			}
 
 			.invoice-box table tr.details td {
@@ -202,6 +228,34 @@ $database->close();
 			.invoice-box.rtl table tr td:nth-child(2) {
 				text-align: left;
 			}
+
+			.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+}
+.styled-table thead tr {
+    background-color: #13243a;
+    color: #ffffff;
+    text-align: left;
+}
+.styled-table th,
+.styled-table td {
+    padding: 8px 8px;
+}
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #315f9b;
+}
 			
 		</style>
 	</head>
@@ -304,9 +358,34 @@ $database->close();
 					</td>
 				</tr>
 
+				<table class="styled-table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Описание</th>
+			<th>От</th>
+			<th>До</th>
+			<th>Кол-во</th>
+			<th>М.Ед.</th>
+			<th>Ед. цена</th>
+			<th>Нетна ст.</th>
+			<th>Забeлежка</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Dom</td>
+            <td>6000</td>
+        </tr>
+        <tr class="active-row">
+            <td>Melissa</td>
+            <td>5150</td>
+        </tr>
+    </tbody>
+</table>
 				<table>
-                    <tr class="heading" style="height: 15px;">
-                        <td width = "5" style = color:#1f3c60><p>№</p></td>
+                    <tr class="heading">
+                        <td width = "5" style = color:#1f3c60;><p>№</p></td>
                         <td width = "15" style = color:#1f3c60><p>Описание</p></td>
                         <td width = "10" style = color:#1f3c60><p>От</p></td>
                         <td width = "10" style = color:#1f3c60><p>До</p></td>
@@ -328,6 +407,28 @@ $database->close();
                         <td width = "5"><p1>1 080.00</p1></td>
                         <td width = "5"><p1>1 080.00</p1></td>
                         <td width = "15"  style="max-width: 50px; word-wrap: break-word;"><p1>Дълга забележка ще се пренесе на следващия ред.</p1></td>
+                    </tr>
+					<tr class="details">
+                        <td width = "5"><p1>2</p1></td>
+                        <td width = "15"><p1>PRISMA-sdcs-sd</p></td>
+                        <td width = "10"><p1></p1></td>
+                        <td width = "10"><p1></p1></td>
+                        <td width = "5"><p1>2.00</p1></td>
+                        <td width = "5"><p1>Бр.</p1></td>
+                        <td width = "5"><p1>2 080.00</p1></td>
+                        <td width = "5"><p1>2 080.00</p1></td>
+                        <td width = "15"  style="max-width: 50px; word-wrap: break-word;"><p1>Забележка</p1></td>
+                    </tr>
+					<tr class="details">
+                        <td width = "5"><p1>3</p1></td>
+                        <td width = "15"><p1>CIRCLE-sdcs-sd</p></td>
+                        <td width = "10"><p1></p1></td>
+                        <td width = "10"><p1></p1></td>
+                        <td width = "5"><p1>3.00</p1></td>
+                        <td width = "5"><p1>Бр.</p1></td>
+                        <td width = "5"><p1>3 080.00</p1></td>
+                        <td width = "5"><p1>3 080.00</p1></td>
+                        <td width = "15"  style="max-width: 50px; word-wrap: break-word;"><p1></p1></td>
                     </tr>
                 </table>
 
