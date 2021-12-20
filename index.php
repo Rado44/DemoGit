@@ -248,11 +248,7 @@ $database->close();*/
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
-}
-.styled-table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
+    border-bottom: 2px solid #315f9b;
 }
 			
 		</style>
