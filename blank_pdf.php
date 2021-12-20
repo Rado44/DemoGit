@@ -7,10 +7,10 @@
   <title>Loading Request</title>
 
   <style type="text/css">
-    /* @page {
+     @page {
       size: A4;
       margin: 10;
-    } */
+    }
     @font-face {
       font-family: "DejaVu Sans";
       font-style: normal;
